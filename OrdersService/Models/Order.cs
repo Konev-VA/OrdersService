@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.ComponentModel.DataAnnotations;
 
 namespace OrdersService.Models
 {
@@ -7,12 +9,21 @@ namespace OrdersService.Models
         [Key]
         public Guid Id { get; init; }
 
-        public StatusType Status { get; set; }
+        public StatusType StatusType { get; set; } = StatusType.New;
 
+        public string Status { get => StatusType.ToString(); }
 
-        public DateTime DateTime { get; init; }
+        public DateTime Created { get; init; } = DateTime.Now;
 
-        public List<OrderLine> Lines { get; set; } = new();
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool? IsDeleted { get; set; } = false;
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public List<Product> Lines { get; set; } = new();
+
+        public List<OrderLine>? OrderLine { get; set; } = new();
     }
 
     public enum StatusType

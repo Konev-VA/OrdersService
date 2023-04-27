@@ -1,13 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace OrdersService.Models
+﻿namespace OrdersService.Models
 {
     public class OrderLine
     {
-        [Key]
-        public Guid Id { get; set; }
-        public int Quantity { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public Guid? OrderId { get; set; }
 
-        public List<Order> Orders { get; } = new();
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public Order? Order { get; set; }
+
+        public Guid ProductId { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public Product? Product { get; set; }
+
+        public int Quantity { get; set; }
     }
 }
