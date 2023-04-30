@@ -11,7 +11,7 @@ namespace OrdersService.Mappers
             {
                 Id = guid,
                 StatusType = Enum.Parse<StatusType>(putOrderDTO.Status, true),
-                OrderLine = putOrderDTO.Lines
+                Lines = putOrderDTO.Lines
             };
         }
     }

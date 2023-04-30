@@ -18,9 +18,9 @@ namespace OrdersService.Controllers
         }
 
         [HttpPost]
-        public async Task<Order> CreateNewOrderAsync(PostOrderDTO order)
+        public async Task<Order> CreateNewOrderAsync(PostOrderDTO orderDTO)
         {
-            return await _ordersBLL.CreateOrder(PostOrderDTOToOrderMapper.MapPostOrderDTOToOrder(order));
+            return await _ordersBLL.CreateOrder(PostOrderDTOToOrderMapper.MapPostOrderDTOToOrder(orderDTO));
         }
 
         [HttpPut("{id}")]
@@ -30,9 +30,23 @@ namespace OrdersService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Order> GetOrder(Guid id)
+        public async Task<Object> GetOrder(Guid id)
         {
-            return await _ordersBLL.GetOrder(id);
+            var order = await _ordersBLL.GetOrder(id);
+
+            if (order == null)
+                return NotFound();
+
+            return order;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(Guid id)
+        {
+            if (await _ordersBLL.DeleteOrder(id))
+                return Ok(200);
+
+            return NotFound();
         }
     }
 }

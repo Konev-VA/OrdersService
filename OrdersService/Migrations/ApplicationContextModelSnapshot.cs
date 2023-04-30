@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrdersService;
 
 #nullable disable
@@ -16,26 +15,22 @@ namespace OrdersService.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("OrdersService.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<int>("StatusType")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -45,13 +40,13 @@ namespace OrdersService.Migrations
             modelBuilder.Entity("OrdersService.Models.OrderLine", b =>
                 {
                     b.Property<Guid?>("OrderId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("integer");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("OrderId", "ProductId");
 
@@ -64,11 +59,11 @@ namespace OrdersService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -95,7 +90,7 @@ namespace OrdersService.Migrations
             modelBuilder.Entity("OrdersService.Models.OrderLine", b =>
                 {
                     b.HasOne("OrdersService.Models.Order", "Order")
-                        .WithMany("OrderLine")
+                        .WithMany("Lines")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -113,7 +108,7 @@ namespace OrdersService.Migrations
 
             modelBuilder.Entity("OrdersService.Models.Order", b =>
                 {
-                    b.Navigation("OrderLine");
+                    b.Navigation("Lines");
                 });
 
             modelBuilder.Entity("OrdersService.Models.Product", b =>

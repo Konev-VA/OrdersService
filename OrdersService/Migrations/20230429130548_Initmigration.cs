@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OrdersService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class Initmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +17,10 @@ namespace OrdersService.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    StatusType = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,8 +31,8 @@ namespace OrdersService.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,22 +43,22 @@ namespace OrdersService.Migrations
                 name: "OrderLines",
                 columns: table => new
                 {
-                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false)
+                    OrderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderLines", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_OrderLines_Orders_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_OrderLines_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderLines_Products_OrderId",
-                        column: x => x.OrderId,
+                        name: "FK_OrderLines_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -69,9 +69,9 @@ namespace OrdersService.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("2500ca62-46d7-4e26-be7e-316388a48063"), "Notebook" },
-                    { new Guid("8a0ae38c-b665-4272-aa3c-be76283144ac"), "Phone" },
-                    { new Guid("97a4001e-a9a6-47fb-b5df-fe7b774e6bf6"), "Computer" }
+                    { new Guid("7054e065-946f-4c07-b603-9a50103acaae"), "Notebook" },
+                    { new Guid("946f34f1-af13-4557-9743-39d4beca44fb"), "Phone" },
+                    { new Guid("eccea7ae-ed79-4848-b205-c05b9cad362d"), "Computer" }
                 });
 
             migrationBuilder.CreateIndex(

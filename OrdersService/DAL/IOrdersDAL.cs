@@ -8,8 +8,8 @@ namespace OrdersService.DAL
 
         Task<Order> UpdateOrder(Order order);
 
-        Task<Order> GetOrder(Guid id);
+        Task<Order?> GetOrder(Guid id);
 
-        Task DeleteOrder(Guid id);
+        void DeleteOrder(Guid id);
     }
 }

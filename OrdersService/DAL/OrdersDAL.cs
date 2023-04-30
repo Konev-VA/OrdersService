@@ -28,22 +28,23 @@ namespace OrdersService.DAL
             }
         }
 
-        public Task DeleteOrder(Guid id)
+        public void DeleteOrder(Guid id)
         {
-            throw new NotImplementedException();
+            db.Orders.Remove(db.Orders.FirstOrDefault(o => o.Id == id)!);
         }
 
-        public async Task<Order> GetOrder(Guid id)
+        public async Task<Order?> GetOrder(Guid id)
         {
-            return await db.Orders.Include(x => x.Lines)
+            return await db.Orders.Include(x => x.Products)
                 .FirstOrDefaultAsync((x) => x.Id == id);
         }
 
         public async Task<Order> UpdateOrder(Order order)
         {
-            var result = await db.Orders.Where((x) => x.Id == order.Id).FirstOrDefaultAsync();
+            var result = await db.Orders.FirstOrDefaultAsync(x => x.Id == order.Id);
 
             result.StatusType = order.StatusType;
+            result.Products = order.Products;
             result.Lines = order.Lines;
             result.IsDeleted = order.IsDeleted;
 

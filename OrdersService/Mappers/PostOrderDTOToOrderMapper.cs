@@ -10,9 +10,9 @@ namespace OrdersService.Mappers
             return new Order()
             {
                 Id = postOrderDTO.Id,
-                Created = DateTime.Now,
+                Created = DateTime.UtcNow,
                 IsDeleted = false,
-                OrderLine = postOrderDTO.Lines,
+                Lines = postOrderDTO.Lines,
                 StatusType = StatusType.New
             };
         }
