@@ -10,6 +10,6 @@ namespace OrdersService.BLL
 
         Task<Order> GetOrder(Guid id);
 
-        Task DeleteOrder(Guid id);
+        Task<bool> DeleteOrder(Guid id);
     }
 }
