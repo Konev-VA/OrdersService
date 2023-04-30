@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OrdersService.Models
 {
@@ -15,7 +13,7 @@ namespace OrdersService.Models
 
         public string Status { get => StatusType.ToString(); }
 
-        public DateTime Created { get; init; } = DateTime.Now;
+        public DateTime Created { get; init; } = DateTime.UtcNow;
 
         [Newtonsoft.Json.JsonIgnore]
         [System.Text.Json.Serialization.JsonIgnore]

@@ -55,7 +55,7 @@ namespace OrdersService.BLL
         {
             var oldOrder = await _ordersDAL.GetOrder(order.Id);
 
-            if (oldOrder == null)
+            if (oldOrder == null || oldOrder.IsDeleted)
                 throw new Exception("Попытка обновления несуществующего заказа");
 
             bool linesAreEquals = order.Lines.Count == oldOrder.Lines.Count;
