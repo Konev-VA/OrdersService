@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OrdersService.Models.DTO
+namespace Models.DTO
 {
     [NotMapped]
     public class PutOrderDTO

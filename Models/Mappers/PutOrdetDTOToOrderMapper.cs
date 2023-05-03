@@ -1,5 +1,5 @@
-﻿using OrdersService.Models;
-using OrdersService.Models.DTO;
+﻿using Models;
+using Models.DTO;
 
 namespace OrdersService.Mappers
 {

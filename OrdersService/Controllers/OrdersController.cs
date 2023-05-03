@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OrdersService.BLL;
+﻿using BLLInterfaces;
+using Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using Models;
+using Models.DTO;
+using Models.Mappers;
 using OrdersService.Mappers;
-using OrdersService.Models;
-using OrdersService.Models.DTO;
 
 namespace OrdersService.Controllers
 {
@@ -18,15 +20,38 @@ namespace OrdersService.Controllers
         }
 
         [HttpPost]
-        public async Task<Order> CreateNewOrderAsync(PostOrderDTO orderDTO)
+        public async Task<Object> CreateNewOrderAsync(PostOrderDTO orderDTO)
         {
-            return await _ordersBLL.CreateOrder(PostOrderDTOToOrderMapper.MapPostOrderDTOToOrder(orderDTO));
+            try
+            {
+                return StatusCode(200, await _ordersBLL.CreateOrder(PostOrderDTOToOrderMapper.MapPostOrderDTOToOrder(orderDTO)));
+            }
+            catch (Exception ex) when (ex is MissingLinesException || ex is IncorrectLinesQuantityException)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Здесь должно быть логирование непредвиденной ошибки
+
+                // Также, учитывая, что не стоит лишний раз показывать наружу ошибку,
+                // а также, что в рамках тестового задания неизвестно кто будет являться клиентом API,
+                // возвращается просто "текст-заглушка".
+                return StatusCode(500, "Что-то пошло не так");
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<Order> UpdateOrder(Guid id, PutOrderDTO order)
+        public async Task<ObjectResult> UpdateOrder(Guid id, PutOrderDTO order)
         {
-            return await _ordersBLL.UpdateOrder(PutOrdetDTOToOrderMapper.MapPutOrderDTOToOrder(order, id));
+            try
+            {
+                return StatusCode(200, await _ordersBLL.UpdateOrder(PutOrdetDTOToOrderMapper.MapPutOrderDTOToOrder(order, id)));
+            }
+            catch (OrderNotFoundException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
@@ -41,10 +66,14 @@ namespace OrdersService.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(Guid id)
+        public async Task<Object> DeleteOrder(Guid id)
         {
+            //return BadRequest("Test error");
+
+            //return new HttpResponseMessage() {StatusCode = System.Net.HttpStatusCode.BadRequest, Content = new StringContent("Test Error") };
+
             if (await _ordersBLL.DeleteOrder(id))
-                return Ok(200);
+                return Ok();
 
             return NotFound();
         }

@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OrdersService.Models;
+﻿using DALInterfaces;
+using Microsoft.EntityFrameworkCore;
+using Models;
 
-namespace OrdersService.DAL
+namespace DALImplementations
 {
     public class OrdersDAL : IOrdersDAL
     {
@@ -36,7 +37,7 @@ namespace OrdersService.DAL
         public async Task<Order?> GetOrder(Guid id)
         {
             return await db.Orders.Include(x => x.Products)
-                .FirstOrDefaultAsync((x) => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Order> UpdateOrder(Order order)

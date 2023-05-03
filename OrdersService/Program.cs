@@ -1,9 +1,9 @@
-
+using BLLImplementations;
+using BLLInterfaces;
+using DALImplementations;
+using DALInterfaces;
 using Microsoft.EntityFrameworkCore;
-using OrdersService.BLL;
-using OrdersService.DAL;
 using OrdersService.Exceptions;
-using OrdersService.Models;
 
 namespace OrdersService
 {

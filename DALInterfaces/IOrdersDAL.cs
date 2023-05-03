@@ -1,6 +1,6 @@
-﻿using OrdersService.Models;
+﻿using Models;
 
-namespace OrdersService.DAL
+namespace DALInterfaces
 {
     public interface IOrdersDAL
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrdersService.Models;
+using Models;
 
-namespace OrdersService
+namespace DALImplementations
 {
     public class ApplicationContext : DbContext
     {
