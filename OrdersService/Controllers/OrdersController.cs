@@ -1,5 +1,4 @@
 ﻿using BLLInterfaces;
-using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.DTO;
@@ -22,60 +21,43 @@ namespace OrdersService.Controllers
         [HttpPost]
         public async Task<Object> CreateNewOrderAsync(PostOrderDTO orderDTO)
         {
-            try
-            {
-                return StatusCode(200, await _ordersBLL.CreateOrder(PostOrderDTOToOrderMapper.MapPostOrderDTOToOrder(orderDTO)));
-            }
-            catch (Exception ex) when (ex is MissingLinesException || ex is IncorrectLinesQuantityException)
-            {
-                return StatusCode(409, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                // Здесь должно быть логирование непредвиденной ошибки
-
-                // Также, учитывая, что не стоит лишний раз показывать наружу ошибку,
-                // а также, что в рамках тестового задания неизвестно кто будет являться клиентом API,
-                // возвращается просто "текст-заглушка".
-                return StatusCode(500, "Что-то пошло не так");
-            }
+            return HandleResult(await _ordersBLL.CreateOrder(PostOrderDTOToOrderMapper.MapPostOrderDTOToOrder(orderDTO)));
         }
 
         [HttpPut("{id}")]
-        public async Task<ObjectResult> UpdateOrder(Guid id, PutOrderDTO order)
+        public async Task<Object> UpdateOrder(Guid id, PutOrderDTO order)
         {
-            try
-            {
-                return StatusCode(200, await _ordersBLL.UpdateOrder(PutOrdetDTOToOrderMapper.MapPutOrderDTOToOrder(order, id)));
-            }
-            catch (OrderNotFoundException ex)
-            {
-                return StatusCode(409, ex.Message);
-            }
+            return HandleResult(await _ordersBLL.UpdateOrder(PutOrdetDTOToOrderMapper.MapPutOrderDTOToOrder(order, id)));
         }
 
         [HttpGet("{id}")]
         public async Task<Object> GetOrder(Guid id)
         {
-            var order = await _ordersBLL.GetOrder(id);
-
-            if (order == null)
-                return NotFound();
-
-            return order;
+            return HandleResult(await _ordersBLL.GetOrder(id));
         }
 
         [HttpDelete("{id}")]
         public async Task<Object> DeleteOrder(Guid id)
         {
-            //return BadRequest("Test error");
+            var result = HandleResult(await _ordersBLL.DeleteOrder(id));
 
-            //return new HttpResponseMessage() {StatusCode = System.Net.HttpStatusCode.BadRequest, Content = new StringContent("Test Error") };
+            return result.StatusCode == 200 ? StatusCode(200) : result;
+        }
 
-            if (await _ordersBLL.DeleteOrder(id))
-                return Ok();
+        private ObjectResult HandleResult(ServiceResult<Order> result)
+        {
+            if (result.Success)
+                return StatusCode(200, result.Value);
 
-            return NotFound();
+            if (result.IsException)
+                // Здесь должно быть логирование непредвиденной ошибки
+
+                // Также, учитывая, что не стоит лишний раз показывать наружу ошибку,
+                // а также, что в рамках тестового задания неизвестно кто будет являться клиентом API,
+                // возвращается просто "текст-заглушка".
+                return StatusCode(409, "Что-то пошло не так");
+
+            return StatusCode(409, result.FailureMessage);
         }
     }
 }

@@ -4,12 +4,12 @@ namespace BLLInterfaces
 {
     public interface IOrdersBLL
     {
-        Task<Order> CreateOrder(Order order);
+        Task<ServiceResult<Order>> CreateOrder(Order order);
 
-        Task<Order> UpdateOrder(Order order);
+        Task<ServiceResult<Order>> UpdateOrder(Order order);
 
-        Task<Order> GetOrder(Guid id);
+        Task<ServiceResult<Order>> GetOrder(Guid id);
 
-        Task<bool> DeleteOrder(Guid id);
+        Task<ServiceResult<Order>> DeleteOrder(Guid id);
     }
 }
