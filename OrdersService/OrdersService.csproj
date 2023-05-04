@@ -24,7 +24,6 @@
     <ProjectReference Include="..\BLLInterfaces\BLLInterfaces.csproj" />
     <ProjectReference Include="..\DALImplementations\DALImplementations.csproj" />
     <ProjectReference Include="..\DALInterfaces\DALInterfaces.csproj" />
-    <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
