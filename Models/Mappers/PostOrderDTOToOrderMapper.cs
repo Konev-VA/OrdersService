@@ -1,7 +1,6 @@
-﻿using OrdersService.Models;
-using OrdersService.Models.DTO;
+﻿using Models.DTO;
 
-namespace OrdersService.Mappers
+namespace Models.Mappers
 {
     public class PostOrderDTOToOrderMapper
     {

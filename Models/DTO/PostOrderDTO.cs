@@ -1,4 +1,4 @@
-﻿namespace OrdersService.Models.DTO
+﻿namespace Models.DTO
 {
     public class PostOrderDTO
     {
